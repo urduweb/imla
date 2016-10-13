@@ -1,2 +1,3 @@
-# imla
-Adapting Imla Nama in Unicode digital writing
+# Imla Namah
+Adapting Imla Nama in Unicode digital writing.
+
