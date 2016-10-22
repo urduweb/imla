@@ -1,0 +1,43 @@
+{% assign previous_title = '' %}
+{% assign previous_link  = '' %}
+{% assign next_title = '' %}
+{% assign next_link  = '' %}
+
+{% assign chapters = site.data.chapters %}
+
+{% for ch in chapters %}
+    {% assign document_url = ch.slug | url_encode | prepend: "/" | append: "/" %}
+    
+    {% if document_url == page.url %}
+        {% if forloop.first %}
+        {% else %}
+            {% assign previous = forloop.index0 | minus: 1 %}
+            {% assign previous_link  = chapters[previous].slug | prepend: "/" | prepend: site.github.url | append: "/" %}
+            {% assign previous_title = chapters[previous].title %}
+        {% endif %}
+        
+        {% if forloop.last %}
+        {% else %}
+            {% assign next = forloop.index0 | plus: 1 %}
+            {% assign next_link  = chapters[next].slug | prepend: "/" | prepend: site.github.url | append: "/" %}
+            {% assign next_title = chapters[next].title %}
+        {% endif %}
+        {% break %}
+    {% endif %}
+{% endfor %}
+
+{% if include.location == 'top' %}
+    {% if previous_link != '' %}
+        <li><a href="{{ previous_link }}"><span class="arrow">&#x2192;</span><span class="page-nav-title"> {{ previous_title }}</span></a></li>
+    {% endif %}
+    {% if next_link != '' %}
+        <li><a href="{{ next_link }}"><span class="page-nav-title">{{ next_title }} </span><span class="arrow">&#x2190;</span></a></li>
+    {% endif %}
+{% elsif include.location == 'bottom' %}
+    {% if previous_link != '' %}
+        <p class="previous-chapter-link"><span class="arrow">&#x2192;</span> پچھلا باب<br><a href="{{ previous_link }}">{{ previous_title }}</a></p>
+    {% endif %}
+    {% if next_link != '' %}
+        <p class="next-chapter-link">اگلا باب <span class="arrow">&#x2190;</span><br><a href="{{ next_link }}">{{ next_title }}</a></p>
+    {% endif %}
+{% endif %}

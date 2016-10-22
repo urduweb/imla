@@ -1,0 +1,23 @@
+title: املا نامہ
+description: > # this means to ignore newlines until next option
+  TODO
+baseurl: "" # the subpath of your site, e.g. /blog
+
+markdown: kramdown
+
+kramdown:
+    smart_quotes: ["rsquo", "lsquo", "rdquo", "ldquo"]
+    auto_ids: false
+    toc_levels: 2..2
+
+sass:
+    style: compressed
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+
+collections:
+  chapters:
+    output: true
+    permalink: /:path/
