@@ -259,21 +259,26 @@ ul.example-list {
 }
 
 ul.example-list li {
-    display: inline-block;
-    background: #eee;
-    border-radius: 2px;
-    line-height: 2.2;
     margin-left: 0.5em;
-    padding: 0 5px;
+    background-image: none;
 }
 
+ul.example-list li,
 .example {
-    font-style: normal;
     display: inline-block;
     background-color: #eee;
     border-radius: 2px;
     line-height: 2.2;
     padding: 0 5px;
+    cursor: pointer;
+    
+    &:hover {
+        background-color: #ddd;
+    }
+}
+
+.example {
+    font-style: normal;
 }
 
 .content ol {
@@ -375,6 +380,112 @@ footer[role="contentinfo"] li:last-child {
 
 footer[role="contentinfo"] li:last-child::after {
     content: none;
+}
+
+.spelling-box {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+    //max-width: 26rem;
+    //max-height: 20rem;
+    padding-bottom: 1rem;
+    background-color: #FBFDF7;
+    border-radius: 0.25rem;
+    border: 1px solid #ee9192;
+    display: flex;
+    flex-direction: column;
+    
+    .spelling-box-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem 0.75rem;
+        background-color: #FBFDF7;
+        border-top-left-radius: 0.25rem;
+        border-top-right-radius: 0.25rem;
+    }
+    
+    .spelling-box-body {
+        padding: 0 1rem;
+        flex: 1;
+        overflow-y: auto;
+        /* See:  https://lea.verou.me/2012/04/background-attachment-local/ */
+        background: linear-gradient(#FBFDF7 30%, rgba(251, 253, 247, 0)),
+                    linear-gradient(rgba(251, 253, 247, 0), #FBFDF7 70%) 0 100%,
+                    radial-gradient(farthest-side at 50% 0, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)),
+                    radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)) 0 100%;
+        background-repeat: no-repeat;
+        background-size: 100% 2rem,
+                         100% 2rem,
+                         100% 1rem,
+                         100% 1rem;
+        background-attachment: local, local, scroll, scroll;
+    }
+    
+    h6 {
+        font-family: NotoNastaliqUrdu, Lalezar-Regular, FiraSans, sans-serif;
+        font-size: 1.1rem;
+    }
+    
+    .close {
+        cursor: pointer;
+        font-family: LalezarWeb, sans-serif;
+        color: #888;
+        font-size: 1.5em;
+        line-height: 1.2;
+        width: 1.2em;
+        height: 1.2em;
+        text-align: center;
+        margin-left: -0.3em;
+    }
+
+    table {
+        width: 100%;
+        font-size: 0.9em;
+        margin-bottom: 0.75rem;
+    }
+    
+    td {
+        border: 0;
+        border-bottom: 1px solid #ddd;
+        
+        &:first-child {
+            width: 15%;
+            text-align: center;
+        }
+        
+        &:last-child {
+            font-family: FiraSans, sans-serif;
+            font-feature-settings: 'smcp', 'c2sc', 'onum';
+            text-align: left;
+            vertical-align: bottom;
+            padding-right: 0.25em;
+            padding-bottom: 0.25em;
+        }
+    }
+    
+    tr:last-child {
+        td {
+            border-bottom: 0;
+        }
+    }
+    
+    @media (min-width: 28rem) {
+        width: calc(100% - 2rem - 2px);
+        max-width: 26rem;
+        right: auto;
+    }
+    
+    @media (min-height: 22rem) {
+        max-height: 26rem;
+        top: auto;
+    }
+    
+    @media (min-height: 40rem) {
+        max-height: 50vh;
+    }
 }
 
 @media (min-width: 640px) {
