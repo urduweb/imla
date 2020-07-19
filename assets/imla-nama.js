@@ -11,8 +11,8 @@ function initExampleEvents() {
     })
 }
 
-function showSpellingBox(data) {
-    console.log(data);
+// Inspired by and adapted from showNameDetails() in https://github.com/r12a/shared/blob/gh-pages/code/show_codepoints.js
+function showSpellingBox(str) {
     spellingBox = document.getElementById('spelling-box');
     
     spellingBox.innerHTML = '';
@@ -28,24 +28,24 @@ function showSpellingBox(data) {
     spellingBox.appendChild(spellingBoxBody);
     
     title = document.createElement('h6');
-    title.appendChild(document.createTextNode(data));
+    title.appendChild(document.createTextNode(str));
     
     closeBtn = document.createElement('span');
     closeBtn.className = 'close';
     closeBtn.appendChild(document.createTextNode('×'));
-    closeBtn.onclick = function() { document.getElementById('spelling-box').style.display = 'none' }
+    closeBtn.onclick = function() { spellingBox.style.display = 'none' }
     
     spellingBoxHeader.appendChild(title);
     spellingBoxHeader.appendChild(closeBtn);
     
-    charTable = document.createElement('table');
+    spellingTable = document.createElement('table');
     
-    charArray = [...data];
-    for (c = 0; c < charArray.length; c++) {
-        character = charArray[c];
-        dec = character.codePointAt(0);
+    charArray = [...str];
+    for (i = 0; i < charArray.length; i++) {
+        c = charArray[i];
+        dec = c.codePointAt(0);
         hex = dec.toString(16);
-        while (hex.length < 4) { hex = '0' + hex }
+        while (hex.length < 4) { hex = '0' + hex };
         hex = hex.toUpperCase();
         
         row = document.createElement('tr');
@@ -54,15 +54,47 @@ function showSpellingBox(data) {
         charUnicodeName.setAttribute('dir', 'ltr');
         charUnicodeName.setAttribute('lang', 'en');
         
-        charItself.appendChild(document.createTextNode(character));
-        charUnicodeName.appendChild(document.createTextNode("U+" + hex));
+        var name, nameNode;
+        var label, labelNode;
+        
+        if (charData[c]) {
+            cData = charData[c];
+            
+            name = 'U+' + hex + ' ' + cData.name;
+            nameNode = document.createTextNode(name);
+            
+            if (cData.label) {
+                label = cData.label;
+                labelNode =  document.createElement('span');
+                labelNode.appendChild(document.createTextNode(label));
+                labelNode.className = 'alt-label';
+                labelNode.setAttribute('dir', 'ltr');
+                labelNode.setAttribute('lang', 'en');
+            } else if (cData.type == 'diacritic') {
+                label = '\u{25cc}' + c;
+                labelNode = document.createElement('span');
+                labelNode.appendChild(document.createTextNode(label));
+                labelNode.className = 'diacritic';
+            } else {
+                label = c;
+                labelNode = document.createTextNode(label);
+            }
+        } else {
+            name = 'U+' + hex + ' NAME NOT FOUND';
+            nameNode = document.createTextNode(name);
+            labelNode = document.createTextNode(c);
+        }
+        
+        charItself.appendChild(labelNode);
+        charUnicodeName.appendChild(nameNode);
         
         row.appendChild(charItself);
         row.appendChild(charUnicodeName);
-        charTable.appendChild(row);
+
+        spellingTable.appendChild(row);
     }
     
-    spellingBoxBody.appendChild(charTable);
+    spellingBoxBody.appendChild(spellingTable);
 }
 
 window.onload = function() {
