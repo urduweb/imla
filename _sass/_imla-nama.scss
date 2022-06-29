@@ -35,6 +35,14 @@ html {
          url("type/FiraSans-Regular.woff") format("woff");
 }
 
+@counter-style urdu-abjad {
+    system: fixed;
+    symbols: '\0627 ' '\628' '\62C' '\62F' '\6C1' '\648' '\632' '\62D' '\637' '\6CC' '\6A9' '\644' '\645' '\646' '\636' '\639' '\641' '\635' '\642' '\631' '\633' '\62A' '\62B' '\62E' '\630' '\638' '\63A' '\634';
+    /* symbols: 'ا' 'ب' 'ج' 'د' 'ه' 'و' 'ز' 'ح' 'ط' 'ی' 'ك' 'ل' 'م' 'ن' 'ص' 'ع' 'ف' 'ض' 'ق' 'ر' 'س' 'ت' 'ث' 'خ' 'ذ' 'ظ' 'غ' 'ش' */;
+    prefix: '(';
+    suffix: ') ';
+    } // custom counter style for urdu abjads. prefix and suffix brackets not working for some reason
+
 html {
     box-sizing: border-box;
     font-size: 87.5%;
@@ -122,23 +130,25 @@ p {
 .toc-index {
     margin-bottom: 2.6rem;
     text-align: right;
-    counter-reset: toc-index-count toc-index-count-roman;
+    counter-reset: toc-index-count toc-index-count-abjad;
 
     li::before {
-        font-family: LalezarWeb, sans-serif;
+        font-family: NotoNastaliqUrdu, sans-serif; //Removed Lalezar due to lack of Urdu numeral support
+        font-weight:bold;
         line-height: 1;
         margin-left: 0.75em;
         color: #888;
+        display: inline-block; //required for Abjad numbering on main table of contents
     }
 
     li:nth-child(n+3)::before {
         counter-increment: toc-index-count;
-        content: counter(toc-index-count);
+        content: counter(toc-index-count, persian); // using persian as firefox does not support urdu without -moz prefix
     }
 
     li:nth-child(-n+2)::before {
-        counter-increment: toc-index-count-roman;
-        content: counter(toc-index-count-roman, lower-roman);
+        counter-increment: toc-index-count-abjad;
+        content: counter(toc-index-count-abjad, urdu-abjad); // lower-roman numbering replaced with urdu abjads
     }
 }
 .index,
@@ -231,8 +241,10 @@ article h1 {
 }
 
 article h2::before {
+    font-family: NotoNastaliqUrdu, sans-serif;  //Removed Lalezar due to lack of Urdu numeral support
+    font-weight:bold;
     counter-increment: subhead-count;
-    content: counter(subhead-count);
+    content: counter(subhead-count, persian);
     color: #888;
     margin-left: 0.75em;
 }
@@ -290,8 +302,9 @@ ul.example-list li,
         list-style-type: none;
         
         &::before {
-            font-family: LalezarWeb, NotoNastaliqUrdu, FiraSans, sans-serif;
-            content: counter(content-ol);
+            font-family:  NotoNastaliqUrdu, FiraSans, sans-serif; //Removed Lalezar due to lack of Urdu numeral support
+            font-weight: bold;
+            content: counter(content-ol,persian);
             counter-increment: content-ol;
             line-height: 1;
             color: #888;
@@ -312,11 +325,12 @@ ul.example-list li,
     ol {
         & > li {
             &::before {
-                content: counter(content-ol, lower-roman);
+                content: counter(content-ol, urdu-abjad); // lower-roman numbering replaced with urdu abjads
+            }
             }
         }
     }
-}
+
 
 .content ol#markdown-toc {
     list-style: none;
@@ -326,7 +340,7 @@ ul.example-list li,
 
     & > li::before {
         counter-increment: toc-count;
-        content: counter(toc-count);
+        content: counter(toc-count, persian);
     }
 }
 
