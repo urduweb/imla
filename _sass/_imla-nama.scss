@@ -19,6 +19,14 @@ html {
 }
 
 @font-face {
+    font-family: NotoNastaliqUrduBold;
+    font-style: normal;
+    font-weight: 400;
+    src: url("type/NotoNastaliqUrdu-Bold.subset.woff2") format("woff2"),
+         url("type/NotoNastaliqUrdu-Bold.subset.woff") format("woff");
+}
+
+@font-face {
     font-family: LalezarWeb;
     font-style: normal;
     font-weight: 400;
@@ -132,8 +140,7 @@ p {
     counter-reset: toc-index-count toc-index-count-abjad;
 
     li::before {
-        font-family: NotoNastaliqUrdu, sans-serif; //Removed Lalezar due to lack of Urdu numeral support
-        font-weight:bold;
+        font-family: NotoNastaliqUrduBold, sans-serif; //Removed Lalezar due to lack of Urdu numeral support
         line-height: 1;
         margin-left: 0.75em;
         text-align: center;
@@ -243,8 +250,7 @@ article h1 {
 }
 
 article h2::before {
-    font-family: NotoNastaliqUrdu, sans-serif;  //Removed Lalezar due to lack of Urdu numeral support
-    font-weight:bold;
+    font-family: NotoNastaliqUrduBold, sans-serif;  //Removed Lalezar due to lack of Urdu numeral support
     counter-increment: subhead-count;
     content: counter(subhead-count, persian);
     color: #888;
@@ -305,8 +311,7 @@ ul.example-list li,
         list-style-type: none;
         
         &::before {
-            font-family:  NotoNastaliqUrdu, FiraSans, sans-serif; //Removed Lalezar due to lack of Urdu numeral support
-            font-weight: bold;
+            font-family:  NotoNastaliqUrduBold, FiraSans, sans-serif; //Removed Lalezar due to lack of Urdu numeral support
             content: counter(content-ol,persian);
             counter-increment: content-ol;
             line-height: 1;
