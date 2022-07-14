@@ -336,7 +336,7 @@ ul.example-list li,
     ol {
         & > li {
             &::before {
-                content: counter(toc-index-count-abjad, lower-roman); // Webkit fallback since it does not support counter-style
+                content: counter(content-ol, lower-roman); // Webkit fallback since it does not support counter-style
                 content: counter(content-ol, urdu-abjad); // lower-roman numbering replaced with urdu abjads
             }
             }
