@@ -15,8 +15,15 @@ html {
     font-style: normal;
     font-weight: 400;
     src: url("type/NotoNastaliqUrdu-Regular.woff2") format("woff2"),
-         url("type/NotoNastaliqUrdu-Regular.woff") format("woff"),
-         url("type/NotoNastaliqUrdu-Regular.ttf") format("truetype");
+         url("type/NotoNastaliqUrdu-Regular.woff") format("woff");
+}
+
+@font-face {
+    font-family: NotoNastaliqUrdu;
+    font-style: normal;
+    font-weight: 700;
+    src: url("type/NotoNastaliqUrdu-Bold.subset.woff2") format("woff2"),
+         url("type/NotoNastaliqUrdu-Bold.subset.woff") format("woff");
 }
 
 @font-face {
@@ -34,6 +41,12 @@ html {
     src: url("type/FiraSans-Regular.woff2") format("woff2"),
          url("type/FiraSans-Regular.woff") format("woff");
 }
+
+@counter-style urdu-abjad {
+    system: fixed;
+    symbols: '\627 ' '\628' '\62C' '\62F' '\6C1' '\648' '\632' '\62D' '\637' '\6CC' '\6A9' '\644' '\645' '\646' '\633' '\639' '\641' '\635' '\642' '\631' '\634' '\62A' '\62B' '\62E' '\630' '\636' '\638' '\63A';
+    /* symbols: 'ا' 'ب' 'ج' 'د' 'ه' 'و' 'ز' 'ح' 'ط' 'ی' 'ك' 'ل' 'م' 'ن' 'ل' 'م' 'ن' 'س' 'ع' 'ف' 'ص' 'ق' 'ر' 'ش' 'ت' 'ث' 'خ' 'ذ' 'ض' 'ظ' 'غ' */;
+    } // custom counter style for urdu abjads.
 
 html {
     box-sizing: border-box;
@@ -122,23 +135,28 @@ p {
 .toc-index {
     margin-bottom: 2.6rem;
     text-align: right;
-    counter-reset: toc-index-count toc-index-count-roman;
+    counter-reset: toc-index-count toc-index-count-abjad;
 
     li::before {
-        font-family: LalezarWeb, sans-serif;
+        font-family: NotoNastaliqUrdu, sans-serif; //Removed Lalezar due to lack of Urdu numeral support
+        font-weight: 700; /* 700 = bold */
         line-height: 1;
         margin-left: 0.75em;
+        text-align: center;
+        width: 1em;
         color: #888;
+        display: inline-block; //required for Abjad numbering on main table of contents
     }
 
     li:nth-child(n+3)::before {
         counter-increment: toc-index-count;
-        content: counter(toc-index-count);
+        content: counter(toc-index-count, persian); // using persian as firefox does not support urdu without -moz prefix
     }
 
     li:nth-child(-n+2)::before {
-        counter-increment: toc-index-count-roman;
-        content: counter(toc-index-count-roman, lower-roman);
+        counter-increment: toc-index-count-abjad;
+        content: counter(toc-index-count-abjad, lower-roman); // Webkit fallback since it does not support counter-style
+        content: counter(toc-index-count-abjad, urdu-abjad); // lower-roman numbering replaced with urdu abjads
     }
 }
 .index,
@@ -231,10 +249,13 @@ article h1 {
 }
 
 article h2::before {
+    font-family: NotoNastaliqUrdu, sans-serif;  //Removed Lalezar due to lack of Urdu numeral support
+    font-weight: 700; /* 700 = bold */
     counter-increment: subhead-count;
-    content: counter(subhead-count);
+    content: counter(subhead-count, persian);
     color: #888;
     margin-left: 0.75em;
+    line-height: 1;
 }
 
 article h2 {
@@ -290,8 +311,9 @@ ul.example-list li,
         list-style-type: none;
         
         &::before {
-            font-family: LalezarWeb, NotoNastaliqUrdu, FiraSans, sans-serif;
-            content: counter(content-ol);
+            font-family:  NotoNastaliqUrdu, FiraSans, sans-serif; //Removed Lalezar due to lack of Urdu numeral support
+            font-weight: 700; /* 700 = bold */
+            content: counter(content-ol,persian);
             counter-increment: content-ol;
             line-height: 1;
             color: #888;
@@ -312,11 +334,13 @@ ul.example-list li,
     ol {
         & > li {
             &::before {
-                content: counter(content-ol, lower-roman);
+                content: counter(content-ol, lower-roman); // Webkit fallback since it does not support counter-style
+                content: counter(content-ol, urdu-abjad); // lower-roman numbering replaced with urdu abjads
+            }
             }
         }
     }
-}
+
 
 .content ol#markdown-toc {
     list-style: none;
@@ -326,7 +350,7 @@ ul.example-list li,
 
     & > li::before {
         counter-increment: toc-count;
-        content: counter(toc-count);
+        content: counter(toc-count, persian);
     }
 }
 
